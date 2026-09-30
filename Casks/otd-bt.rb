@@ -2,7 +2,7 @@ cask "otd-bt" do
   version "0.0.0"
   sha256 ":no-check"
 
-  url "https://github.com/yangyaofei/homebrew-otd/releases/download/v#{version}/otd-bt-v#{version}.zip",
+  url "https://github.com/yangyaofei/homebrew-otd/releases/download/v#{version}/otd-bt-#{version}.zip",
       verified: "github.com/yangyaofei/homebrew-otd/"
   name "OpenTabletDriver BT"
   desc "OpenTabletDriver fork with Wacom Bluetooth (CTL-4100WL/6100WL) macOS support + PenAssist plugin"
