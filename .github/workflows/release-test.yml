@@ -10,4 +10,4 @@ jobs:
       - name: t
         run: echo hi
         env:
-          S1: ${{ secrets.OTD_BT_P12_B64 }}
+          S1: ${{ secrets.DOES_NOT_EXIST_XYZ }}
