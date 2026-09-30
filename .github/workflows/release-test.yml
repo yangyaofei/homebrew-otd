@@ -7,8 +7,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Decode signing cert
+      - name: t
         run: echo hi
         env:
-          OTD_BT_P12_B64: ${{ secrets.OTD_BT_P12_B64 }}
-          OTD_BT_P12_PW: ${{ secrets.OTD_BT_P12_PW }}
+          S1: ${{ secrets.OTD_BT_P12_B64 }}
