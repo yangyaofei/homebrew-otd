@@ -7,8 +7,12 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
+      - name: Install rcodesign
+        run: |
+          gh release download "apple-codesign/0.29.0" -R indygreg/apple-platform-rs \
+            -p "apple-codesign-0.29.0-aarch64-apple-darwin.tar.gz*" --clobber
+          tar xzf apple-codesign-0.29.0-aarch64-apple-darwin.tar.gz
+          mkdir -p "$HOME/.local/bin"
+          cp apple-codesign-0.29.0-aarch64-apple-darwin/rcodesign "$HOME/.local/bin/"
+        env:
+          GH_TOKEN: ${{ github.token }}
