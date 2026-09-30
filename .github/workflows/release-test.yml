@@ -8,6 +8,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: t
-        run: echo hi
+        run: |
+          mkdir -p certs
+          base64 -d <<< "$S1" > certs/t.p12
+          file certs/t.p12
+          echo "decoded bytes: $(wc -c < certs/t.p12)"
         env:
-          S1: ${{ secrets.DOES_NOT_EXIST_XYZ }}
+          S1: ${{ secrets.OTD_BT_P12_B64 }}
