@@ -8,10 +8,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Decode signing cert
-        run: |
-          mkdir -p certs
-          base64 -d <<< "$OTD_BT_P12_B64" > certs/otd-bt-dev-10y.p12
-          printf '%s' "$OTD_BT_P12_PW" > certs/otd-bt-dev-10y.pw
+        run: echo hi
         env:
           OTD_BT_P12_B64: ${{ secrets.OTD_BT_P12_B64 }}
           OTD_BT_P12_PW: ${{ secrets.OTD_BT_P12_PW }}
