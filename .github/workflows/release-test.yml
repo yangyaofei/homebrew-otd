@@ -1,0 +1,17 @@
+name: release-test
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本号"
+        required: false
+        default: ""
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - run: echo ok
