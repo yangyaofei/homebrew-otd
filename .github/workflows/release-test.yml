@@ -1,5 +1,24 @@
+name: release-test
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本号"
+        required: false
+        default: ""
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: macos-latest
     steps:
-      - name:       - name: Install rcodesign
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install rcodesign
         run: |
           gh release download "apple-codesign/0.29.0" -R indygreg/apple-platform-rs \
             -p "apple-codesign-0.29.0-aarch64-apple-darwin.tar.gz*" --clobber
@@ -23,27 +42,3 @@
         run: bash scripts/build-app.sh
         env:
           VERSION: ${{ github.event.inputs.version }}
-          OTD_REF: ${{ github.event.inputs.otd_ref || 'pr4672-bluetooth-macos' }}
-          PENASSIST_REF: ${{ github.event.inputs.penassist_ref || 'master' }}
-
-      - name: Create release
-        run: |
-          VERSION_FILE=tmp/dist/version.txt
-          ls tmp/dist/
-          ZIP=$(ls tmp/dist/otd-bt-*.zip | head -1)
-          VERSION_NAME=$(basename "$ZIP" .zip | sed 's/^otd-bt-//')
-          TAG="v${VERSION_NAME}"
-          SHA=$(shasum -a 256 "$ZIP" | cut -d' ' -f1)
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$ZIP" --clobber
-          else
-            gh release create "$TAG" "$ZIP" \
-              --title "otd-bt $VERSION_NAME" \
-              --notes "OpenTabletDriver BT (macOS) + PenAssist. 首次安装需授权辅助功能/输入监控。"
-          fi
-          echo "$TAG" > "$VERSION_FILE"
-          echo "$SHA" >> "$VERSION_FILE"
-          echo "$VERSION_NAME" >> "$VERSION_FILE"
-        env:
-          GH_TOKEN: ${{ github.token }}
-
