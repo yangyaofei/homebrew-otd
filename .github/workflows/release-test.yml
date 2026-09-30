@@ -1,35 +1,5 @@
-name: release-test
-on:
-  push:
-    tags: ["v*"]
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "版本号"
-        required: false
-        default: ""
-      otd_ref:
-        description: "OTD fork ref"
-        required: false
-        default: "pr4672-bluetooth-macos"
-      penassist_ref:
-        description: "PenAssist ref"
-        required: false
-        default: "master"
-permissions:
-  contents: write
-jobs:
-  build:
-    runs-on: macos-latest
     steps:
-
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Install rcodesign
+      - name:       - name: Install rcodesign
         run: |
           gh release download "apple-codesign/0.29.0" -R indygreg/apple-platform-rs \
             -p "apple-codesign-0.29.0-aarch64-apple-darwin.tar.gz*" --clobber
@@ -77,23 +47,3 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Update cask
-        run: |
-          readarray -t V < tmp/dist/version.txt
-          TAG="${V[0]}" SHA="${V[1]}" VERSION="${V[2]}"
-          python3 - "$VERSION" "$SHA" << 'EOF'
-          import sys, re
-          version, sha = sys.argv[1], sys.argv[2]
-          p = "Casks/otd-bt.rb"
-          s = open(p).read()
-          s = re.sub(r'version "[^"]*"', f'version "{version}"', s)
-          s = re.sub(r'sha256 "[^"]*"', f'sha256 "{sha}"', s)
-          open(p, "w").write(s)
-          EOF
-          git config user.name "release-bot"
-          git config user.email "noreply@github.com"
-          git add Casks/otd-bt.rb
-          git commit -m "cask: bump to $VERSION" || true
-          git push
-        env:
-          GH_TOKEN: ${{ github.token }}
