@@ -39,6 +39,11 @@ cp "$OTD_SRC/eng/bash/macos/Info.plist" "$APP/Contents/"
   || /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $VERSION" "$APP/Contents/Info.plist" 2>/dev/null \
   || /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "$APP/Contents/Info.plist"
+# .NET 运行时致命错误时自动写 minidump（下次 daemon 猝死可尸检）
+/usr/libexec/PlistBuddy -c "Add :LSEnvironment dict" "$APP/Contents/Info.plist" 2>/dev/null || true
+/usr/libexec/PlistBuddy -c "Add :LSEnvironment:DOTNET_DbgEnableMiniDump string 1" "$APP/Contents/Info.plist" 2>/dev/null || true
+/usr/libexec/PlistBuddy -c "Add :LSEnvironment:DOTNET_DbgMiniDumpType string 1" "$APP/Contents/Info.plist" 2>/dev/null || true
+/usr/libexec/PlistBuddy -c "Add :LSEnvironment:DOTNET_DbgMiniDumpName string $HOME/Library/Logs/OpenTabletDriver-crash.dmp" "$APP/Contents/Info.plist" 2>/dev/null || true
 
 echo "==> sign（与 build-app.sh 同一 rcodesign 方式/同一证书）"
 for exe in OpenTabletDriver.UX.MacOS OpenTabletDriver.Daemon OpenTabletDriver.Console createdump; do

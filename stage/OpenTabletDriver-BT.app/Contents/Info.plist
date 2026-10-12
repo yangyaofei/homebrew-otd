@@ -17,11 +17,20 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.6.7-bt.lag2</string>
+	<string>0.6.7-bt.lag6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.6.7-bt.lag2</string>
+	<string>0.6.7-bt.lag6</string>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>DOTNET_DbgEnableMiniDump</key>
+		<string>1</string>
+		<key>DOTNET_DbgMiniDumpName</key>
+		<string>/Users/yangyaofei/Library/Logs/OpenTabletDriver-crash.dmp</string>
+		<key>DOTNET_DbgMiniDumpType</key>
+		<string>1</string>
+	</dict>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.12</string>
 	<key>LSUIElement</key>
